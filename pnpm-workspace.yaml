@@ -1,3 +1,4 @@
-ignoredBuiltDependencies:
+verifyDepsBeforeRun: false
+onlyBuiltDependencies:
   - sharp
   - unrs-resolver

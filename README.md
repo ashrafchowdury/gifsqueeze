@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GIFSqueeze
 
-## Getting Started
+Compress GIFs, keep the quality — a fast, private GIF compressor that runs **entirely in your browser**. No uploads, no server, no database.
 
-First, run the development server:
+Built with Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui, and [gifsicle compiled to WebAssembly](https://github.com/renzhezhilu/gifsicle-wasm-browser).
+
+## How it works
+
+- **Lossless baseline** — every compression runs gifsicle `-O3` optimization, which shrinks the file with *zero* visual quality loss.
+- **Quality slider (1–80)** — layers gifsicle's lossy compression on top. At **80** there is no lossy pass (fully lossless); lower values trade quality for a smaller file.
+- **Advanced options** — optional resize (width), color-palette reduction (with dithering), and frame-rate reduction.
+
+Because all processing happens client-side via WebAssembly, your GIFs never leave your device.
+
+## Features
+
+- Drag & drop, file picker, or paste-from-clipboard upload
+- Adjustable 1–80 quality slider with a lossless default
+- Before/after preview with size and “% saved” stats
+- Advanced controls: resize, reduce colors + dithering, drop frames
+- One-click download of the compressed GIF
+- Light / dark mode
+- Robust error handling (invalid files, failed compression, already-optimized GIFs)
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Production build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm build
+pnpm start
+```
 
-## Learn More
+## Deploy to Vercel
 
-To learn more about Next.js, take a look at the following resources:
+This is a standard Next.js app with no backend, environment variables, or database, so it deploys on Vercel with zero extra configuration — import the repo and deploy. All compute is client-side WebAssembly.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+> If the WASM worker ever requires cross-origin isolation in your environment, add COOP/COEP response headers in `next.config.ts` via the `headers()` option.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tech stack
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Concern            | Choice                                   |
+| ------------------ | ---------------------------------------- |
+| Framework          | Next.js (App Router) + TypeScript        |
+| Styling            | Tailwind CSS                             |
+| Components         | shadcn/ui                                |
+| Compression engine | `gifsicle-wasm-browser` (WebAssembly)    |
